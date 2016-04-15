@@ -58,8 +58,31 @@ def tempe_callback():
 			return('ok, trash\n')
 		return('ok, no trash\n')
 
+@app.route('/wurst/', methods=['POST'])
+def wurst_callback():
+	json_body = request.get_json()
+	if json_body['group_id'] == os.environ['GROUP_ID_WURST'] and json_body['sender_type'] != 'bot':
+		# some degree of verification that it is sent via a groupme callback
+		# could also check for "User-Agent: GroupMeBotNotifier/1.0", but that's plenty spoofable
+
+		if json_body['sender_id'] == os.environ['THE_WURST'].split(','):
+			payload = {
+				'bot_id' : os.environ['BOT_ID_WURST'],
+				'attachments' : [
+					{
+						'type' : 'image',
+						'url'  : 'https://i.groupme.com/300x300.png.88ea060f257e4dedad30d78d6605a36e',
+					},
+				],
+				# 'text'   : random.choice(quotes),
+			}
+			requests.post('https://api.groupme.com/v3/bots/post', json=payload)
+			return('ok, trash\n')
+		return('ok, no trash\n')
+
+
 
 if __name__ == "__main__":
 	port = int(os.environ.get("PORT", 5000))
-	# app.run(host='0.0.0.0', port=port, debug=True)
-	app.run(host='0.0.0.0', port=port)
+	app.run(host='0.0.0.0', port=port, debug=True)
+	# app.run(host='0.0.0.0', port=port)
