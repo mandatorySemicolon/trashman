@@ -67,7 +67,7 @@ def wurst_callback():
 		# could also check for "User-Agent: GroupMeBotNotifier/1.0", but that's plenty spoofable
 
 		print('wurst: in group')
-		if json_body['sender_id'] == os.environ['THE_WURST'].split(','):
+		if json_body['sender_id'] == os.environ['THE_WURST']:
 			print('wurst: correct sender')
 			payload = {
 				'bot_id' : os.environ['BOT_ID_WURST'],
