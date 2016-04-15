@@ -61,11 +61,14 @@ def tempe_callback():
 @app.route('/wurst/', methods=['POST'])
 def wurst_callback():
 	json_body = request.get_json()
+	print('wurst: hit callback')
 	if json_body['group_id'] == os.environ['GROUP_ID_WURST'] and json_body['sender_type'] != 'bot':
 		# some degree of verification that it is sent via a groupme callback
 		# could also check for "User-Agent: GroupMeBotNotifier/1.0", but that's plenty spoofable
 
+		print('wurst: in group')
 		if json_body['sender_id'] == os.environ['THE_WURST'].split(','):
+			print('wurst: correct sender')
 			payload = {
 				'bot_id' : os.environ['BOT_ID_WURST'],
 				'attachments' : [
