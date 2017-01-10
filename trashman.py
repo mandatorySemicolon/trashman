@@ -84,6 +84,29 @@ def wurst_callback():
 		return('ok, no trash\n')
 
 
+@app.route('/dad/', methods=['POST'])
+def dad_callback():
+	json_body = request.get_json()
+	print('dad: hit callback')
+	if json_body['group_id'] == os.environ['GROUP_ID_DAD'] and json_body['sender_type'] != 'bot':
+		# some degree of verification that it is sent via a groupme callback
+		# could also check for "User-Agent: GroupMeBotNotifier/1.0", but that's plenty spoofable
+
+		print('dad: in group')
+		message = json_body['text']
+		words = message.lower().split()
+		if 'i\'m' in words or 'im' in words:
+			index = max(message.lower().find('i\'m') + 3, message.lower().find('im') + 2)
+			result = "hi " + message[index:] + ", im dad"
+
+			payload = {
+				'bot_id' : os.environ['BOT_ID_DAD'],
+				'text'   : result,
+			}
+			requests.post('https://api.groupme.com/v3/bots/post', json=payload)
+			return('ok, trash\n')
+		return('ok, no trash\n')
+
 
 if __name__ == "__main__":
 	port = int(os.environ.get("PORT", 5000))
