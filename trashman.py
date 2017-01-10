@@ -97,8 +97,9 @@ def dad_callback():
 		words = message.lower().split()
 		if 'i\'m' in words or 'im' in words:
 			index = max(message.lower().find('i\'m') + 3, message.lower().find('im') + 2)
-			result = "hi " + message[index:] + ", im dad"
+			result = "hi" + message[index:] + ", im dad"
 
+			print('dad: sending message : ' + repr(result))
 			payload = {
 				'bot_id' : os.environ['BOT_ID_DAD'],
 				'text'   : result,
